@@ -6,18 +6,26 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
-import { UserCreateDto, UserUpdateDto, UserRo } from '../dto/user.dto';
+import { UserDto, UserRo } from '../dto/user.dto';
 import { CommonResponse } from 'src/@common/dto/common-response.dto';
-import { USER_CREATE_MESSAGE } from 'src/@common/messages/user.message';
+import {
+  GET_AN_USER_MESSAGE,
+  USER_CREATE_MESSAGE,
+  USER_DELETE_MESSAGE,
+  USER_LIST_MESSAGE,
+} from 'src/@common/messages/user.message';
+import { PaginatedResponse } from 'src/@common/dto/paginated-response.dto';
+import { PaginationQueryDTO } from 'src/@common/dto/pagination-query.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('create-user')
   async create(
-    @Body() createUserDto: UserCreateDto,
+    @Body() createUserDto: UserDto,
   ): Promise<CommonResponse<UserRo>> {
     const data = await this.usersService.create(createUserDto);
     return {
@@ -28,22 +36,47 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async list(
+    @Query() query: PaginationQueryDTO,
+  ): Promise<CommonResponse<PaginatedResponse<UserRo[]>>> {
+    const data = await this.usersService.list(query);
+    return {
+      data,
+      message: [USER_LIST_MESSAGE],
+      success: true,
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<CommonResponse<UserRo>> {
+    const data = await this.usersService.findOne(id);
+    return {
+      data,
+      message: [GET_AN_USER_MESSAGE],
+      success: true,
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UserUpdateDto) {
-    return this.usersService.update(+id, updateUserDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UserDto,
+  ): Promise<CommonResponse<UserRo>> {
+    const data = await this.usersService.update(id, updateUserDto);
+    return {
+      data,
+      message: [],
+      success: true,
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async remove(@Param('id') id: string): Promise<CommonResponse<UserRo>> {
+    const data = await this.usersService.remove(id);
+    return {
+      data,
+      message: [USER_DELETE_MESSAGE],
+      success: true,
+    };
   }
 }
