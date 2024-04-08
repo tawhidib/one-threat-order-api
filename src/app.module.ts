@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { appENVValidationSchema } from './app-env.validation';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { appENVValidationSchema } from './app-env.validation';
         dbName: config.get<string>('MONGO_DB_NAME'),
       }),
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
