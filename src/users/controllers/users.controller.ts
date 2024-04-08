@@ -8,16 +8,23 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
-
+import { UserCreateDto, UserUpdateDto, UserRo } from '../dto/user.dto';
+import { CommonResponse } from 'src/@common/dto/common-response.dto';
+import { USER_CREATE_MESSAGE } from 'src/@common/messages/user.message';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(
+    @Body() createUserDto: UserCreateDto,
+  ): Promise<CommonResponse<UserRo>> {
+    const data = await this.usersService.create(createUserDto);
+    return {
+      data,
+      message: [USER_CREATE_MESSAGE],
+      success: true,
+    };
   }
 
   @Get()
@@ -31,7 +38,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Body() updateUserDto: UserUpdateDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 
