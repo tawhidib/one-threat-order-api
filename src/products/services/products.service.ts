@@ -31,17 +31,17 @@ export class ProductsService {
     const total_count = await this.productModel.countDocuments(db);
     const products = await db.skip(skip).limit(per_page).exec();
     return {
+      data: await Promise.all(
+        products.map(async (product) => {
+          return await this.formatProduct(product);
+        }),
+      ),
       meta: {
         page,
         per_page,
         total_count,
         page_count: Math.floor((total_count + per_page - 1) / per_page),
       },
-      data: await Promise.all(
-        products.map(async (product) => {
-          return await this.formatProduct(product);
-        }),
-      ),
     };
   }
 

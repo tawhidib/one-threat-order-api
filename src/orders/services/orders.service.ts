@@ -92,17 +92,17 @@ export class OrdersService {
     const orders = await db.skip(skip).limit(per_page).exec();
 
     return {
+      data: await Promise.all(
+        orders.map(
+          async (order): Promise<OrderRo> => await this.formatOrder(order),
+        ),
+      ),
       meta: {
         page,
         per_page,
         total_count,
         page_count: Math.floor((total_count + per_page - 1) / per_page),
       },
-      data: await Promise.all(
-        orders.map(
-          async (order): Promise<OrderRo> => await this.formatOrder(order),
-        ),
-      ),
     };
   }
 
