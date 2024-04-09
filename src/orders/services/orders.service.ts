@@ -1,6 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
-import { CreateOrderDto } from '../dto/create-order.dto';
-import { UpdateOrderDto } from '../dto/update-order.dto';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Order, OrderDocument } from '../schemas/order.schema';
 import { Model } from 'mongoose';
@@ -8,11 +11,17 @@ import { UsersService } from 'src/users/services/users.service';
 import { ProductsService } from 'src/products/services/products.service';
 import {
   OrderCreateDto,
+  OrderPaginationQuery,
   OrderRo,
+  OrderUpdateDto,
   ProductsDetailsWithQuantityRo,
 } from '../dto/order.dto';
-import { INVALID_PRODUCT_EXIST_IN_ORDER } from 'src/@common/messages/order.message';
+import {
+  INVALID_PRODUCT_EXIST_IN_ORDER,
+  ORDER_NOT_FOUND,
+} from 'src/@common/messages/order.message';
 import { ProductQuantityObjectType } from '../types/product-quantity.types';
+import { PaginatedResponse } from 'src/@common/dto/paginated-response.dto';
 
 @Injectable()
 export class OrdersService {
@@ -60,20 +69,77 @@ export class OrdersService {
     return await this.formatOrder(order);
   }
 
-  findAll() {
-    return `This action returns all orders`;
+  async list(
+    query: OrderPaginationQuery,
+  ): Promise<PaginatedResponse<OrderRo[]>> {
+    const { page = 1, per_page = 10, user, status, paymentStatus } = query;
+    const skip = (page - 1) * per_page;
+    const conditions: any = {};
+
+    if (user) {
+      conditions['user'] = user;
+    }
+    if (status) {
+      conditions['status'] = status;
+    }
+
+    if (paymentStatus) {
+      conditions['paymentStatus'] = paymentStatus;
+    }
+
+    const db = this.orderModel.find({ ...conditions, deleted: false });
+    const total_count = await this.orderModel.countDocuments(db);
+    const orders = await db.skip(skip).limit(per_page).exec();
+
+    return {
+      meta: {
+        page,
+        per_page,
+        total_count,
+        page_count: Math.floor((total_count + per_page - 1) / per_page),
+      },
+      data: await Promise.all(
+        orders.map(
+          async (order): Promise<OrderRo> => await this.formatOrder(order),
+        ),
+      ),
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(id: string): Promise<OrderRo> {
+    const order = await this.orderModel.findOne({ _id: id, deleted: false });
+    if (!order) {
+      throw new NotFoundException(ORDER_NOT_FOUND);
+    }
+
+    return await this.formatOrder(order);
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  async update(id: string, dto: OrderUpdateDto): Promise<OrderRo> {
+    if (!dto.paymentStatus && !dto.status) {
+      throw new BadRequestException('nothing to update');
+    }
+    const checkOrder = await this.findOne(id);
+
+    const updatedOrder = await this.orderModel.findOneAndUpdate(
+      { _id: checkOrder.id },
+      { $set: { ...dto } },
+      { new: true },
+    );
+
+    return await this.formatOrder(updatedOrder);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(id: string): Promise<OrderRo> {
+    const checkOrder = await this.findOne(id);
+
+    const deletedOrder = await this.orderModel.findOneAndUpdate(
+      { _id: checkOrder.id },
+      { $set: { deleted: true, deletedAt: new Date() } },
+      { new: true },
+    );
+
+    return await this.formatOrder(deletedOrder);
   }
 
   async formatOrder(order: OrderDocument): Promise<OrderRo> {
@@ -98,8 +164,8 @@ export class OrdersService {
       );
 
       productsWithQuantityDetails.push({
-        quantity: productsWithQuantity[i].quantity,
         product,
+        quantity: productsWithQuantity[i].quantity,
       });
     }
 

@@ -6,12 +6,24 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { OrdersService } from '../services/orders.service';
-import { UpdateOrderDto } from '../dto/update-order.dto';
-import { OrderCreateDto, OrderRo } from '../dto/order.dto';
+import {
+  OrderCreateDto,
+  OrderPaginationQuery,
+  OrderRo,
+  OrderUpdateDto,
+} from '../dto/order.dto';
 import { CommonResponse } from 'src/@common/dto/common-response.dto';
-import { ORDER_CREATE_MESSAGE } from 'src/@common/messages/order.message';
+import {
+  DELETE_AN_ORDER_MESSAGE,
+  GET_AN_ORDER_MESSAGE,
+  GET_ORDER_LIST_MESSAGE,
+  ORDER_CREATE_MESSAGE,
+  UPDATE_AN_ORDER_MESSAGE,
+} from 'src/@common/messages/order.message';
+import { PaginatedResponse } from 'src/@common/dto/paginated-response.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -28,22 +40,48 @@ export class OrdersController {
   }
 
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  async list(
+    @Query() query: OrderPaginationQuery,
+  ): Promise<CommonResponse<PaginatedResponse<OrderRo[]>>> {
+    const data = await this.ordersService.list(query);
+    return {
+      data,
+      message: [GET_ORDER_LIST_MESSAGE],
+      success: true,
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<CommonResponse<OrderRo>> {
+    const data = await this.ordersService.findOne(id);
+
+    return {
+      data,
+      message: [GET_AN_ORDER_MESSAGE],
+      success: true,
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
+  async update(
+    @Param('id') id: string,
+    @Body() dto: OrderUpdateDto,
+  ): Promise<CommonResponse<OrderRo>> {
+    const data = await this.ordersService.update(id, dto);
+    return {
+      data,
+      message: [UPDATE_AN_ORDER_MESSAGE],
+      success: true,
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordersService.remove(+id);
+  async remove(@Param('id') id: string): Promise<CommonResponse<OrderRo>> {
+    const data = await this.ordersService.remove(id);
+    return {
+      data,
+      message: [DELETE_AN_ORDER_MESSAGE],
+      success: true,
+    };
   }
 }

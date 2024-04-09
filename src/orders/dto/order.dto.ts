@@ -16,6 +16,7 @@ import { ProductRo } from 'src/products/dto/product.dto';
 import { OrderStatus } from '../enums/order-status.enum';
 import { PaymentStatus } from '../enums/payment-status.enum';
 import { UserRo } from 'src/users/dto/user.dto';
+import { PaginationQueryDTO } from 'src/@common/dto/pagination-query.dto';
 
 class ProductsWithQuantityDto {
   @ApiProperty()
@@ -75,4 +76,22 @@ export class OrderRo {
   productsWithQuantity: ProductsDetailsWithQuantityRo[];
   createdAt: Date;
   updatedAt: Date;
+}
+
+export class OrderPaginationQuery extends PaginationQueryDTO {
+  @IsOptional()
+  @ApiProperty()
+  @IsString()
+  @IsMongoId()
+  user: string;
+
+  @IsOptional()
+  @IsString()
+  @IsEnum(OrderStatus)
+  status: string;
+
+  @IsOptional()
+  @IsString()
+  @IsEnum(PaymentStatus)
+  paymentStatus: string;
 }
