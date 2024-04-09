@@ -15,6 +15,10 @@ endpoint validates incoming data, handles exceptions, and returns appropriate re
 
 - here is the app root link: <a href="https://one-threat-order-api.onrender.com/api" target="_blank">https://one-threat-order-api.onrender.com/api</a>
 
+### I am Using free server of <a href="https://render.com/" target="_blank">Render</a> for deploy this application
+
+<p>According to <a href="https://render.com/" target="_blank">Render</a>: <span style="color:red;font-weight:300">free instance will spin down with inactivity, which can delay requests by 50 seconds or more.</span></p>
+
 ### Order APIs
 
 1.  Get Order List (GET): <a href="https://one-threat-order-api.onrender.com/api/orders" target="_blank">Order List</a>
@@ -62,86 +66,187 @@ endpoint validates incoming data, handles exceptions, and returns appropriate re
 
 here output will be like -
 
-- data
-  - id: string
-  - status: string
-  - paymentStatus: string
-  - total: number
-  - productsWithQuantity[]
-    - id: string
-    - name: string
-    - description: string
-    - price: number
-    - createdAt: Date
-    - updatedAt: Date
-  - user
-    - id: string
-    - name: string
-    - email: string
-    - createdAt: Date
-    - updatedAt: Date
-  - createdAt: Date
-  - updatedAt: Date-
-- message: string[]
-- success: boolean
+    - data
+      - id: string
+      - status: string
+      - paymentStatus: string
+      - total: number
+      - productsWithQuantity[]
+        - id: string
+        - name: string
+        - description: string
+        - price: number
+        - createdAt: Date
+        - updatedAt: Date
+      - user
+        - id: string
+        - name: string
+        - email: string
+        - createdAt: Date
+        - updatedAt: Date
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
 
-3.  Create an Order (POST): endpoint is -> https://one-threat-order-api.onrender.com/api/orders
+1.  Create an Order (POST): endpoint is -> https://one-threat-order-api.onrender.com/api/orders
 
     input of the api is: {user: string(user id), productsWithQuantity: array of object, object have {product: sting(product id), quantity: number}}. can create a new order with valid user and products id via Postman/Insomnia.
 
     here output will be like -
 
-- data
-  - id: string
-  - status: string
-  - paymentStatus: string
-  - total: number
-  - productsWithQuantity[]
-    - id: string
-    - name: string
-    - description: string
-    - price: number
-    - createdAt: Date
-    - updatedAt: Date
-  - user
-    - id: string
-    - name: string
-    - email: string
-    - createdAt: Date
-    - updatedAt: Date
-  - createdAt: Date
-  - updatedAt: Date-
-- message: string[]
-- success: boolean
+    - data
+      - id: string
+      - status: string
+      - paymentStatus: string
+      - total: number
+      - productsWithQuantity[]
+        - id: string
+        - name: string
+        - description: string
+        - price: number
+        - createdAt: Date
+        - updatedAt: Date
+      - user
+        - id: string
+        - name: string
+        - email: string
+        - createdAt: Date
+        - updatedAt: Date
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
 
-4.  Update an Order (PATCH): endpoint is -> https://one-threat-order-api.onrender.com/api/orders/6614cc0d40bf95419231750a
+2.  Update an Order (PATCH): endpoint is -> https://one-threat-order-api.onrender.com/api/orders/6614cc0d40bf95419231750a
 
     input of the api is: {status: string, paymentStatus: status}. currently this api can update only the order status and payment status. you can update an order by postman/insomnia.
 
     here output will be like -
 
-- data
-  - id: string
-  - status: string
-  - paymentStatus: string
-  - total: number
-  - productsWithQuantity[]
-    - id: string
-    - name: string
-    - description: string
-    - price: number
-    - createdAt: Date
-    - updatedAt: Date
-  - user
-    - id: string
-    - name: string
-    - email: string
-    - createdAt: Date
-    - updatedAt: Date
-  - createdAt: Date
-  - updatedAt: Date-
-- message: string[]
-- success: boolean
+    - data
+      - id: string
+      - status: string
+      - paymentStatus: string
+      - total: number
+      - productsWithQuantity[]
+        - id: string
+        - name: string
+        - description: string
+        - price: number
+        - createdAt: Date
+        - updatedAt: Date
+      - user
+        - id: string
+        - name: string
+        - email: string
+        - createdAt: Date
+        - updatedAt: Date
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
+
+3.  Delete an Order (DELETE): end-point is -> https://one-threat-order-api.onrender.com/api/orders/6614cc0d40bf95419231750a
+
+    this api update order's delete and deletedAt field and make it true, new Date(). so it is ensuring data will never permanently deleted from database.
+
+    here output will be like -
+
+    - data
+      - id: string
+      - status: string
+      - paymentStatus: string
+      - total: number
+      - productsWithQuantity[]
+        - id: string
+        - name: string
+        - description: string
+        - price: number
+        - createdAt: Date
+        - updatedAt: Date
+      - user
+        - id: string
+        - name: string
+        - email: string
+        - createdAt: Date
+        - updatedAt: Date
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
+
+## I Also developed User and Product apis
+
+### User APIs
+
+1.  Get User List (GET): <a href="https://one-threat-order-api.onrender.com/api/users" target="_blank">user List</a>
+
+    input of this api: this api can take 3 optional parameters.
+
+    1. page: number
+    2. per_page: number
+    3. query_string: string (passing this you can find user by name)
+
+    output of this api:
+
+    - data
+      - data[]
+        - id: string
+        - name: string
+        - email: string
+        - createdAt: Date
+        - updatedAt: Date
+      - meta
+        - page: number
+        - per_page: number
+        - total_count: number
+        - page_count: number
+    - message: string[]
+    - success: boolean
+
+2.  Get An User (GET): <a href="https://one-threat-order-api.onrender.com/api/users/661386b463eb22abed701038" target="_blank">Order(Id: 661386b463eb22abed701038)</a>
+
+    here output will be like -
+
+    - data
+      - id: string
+      - name: string
+      - email: string
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
+
+3.  Create an User (POST): endpoint is -> https://one-threat-order-api.onrender.com/api/users
+
+    input of the api is: {name: string(user id), email: string}. can create a new user. here email should be unique
+
+    here output will be like -
+
+    - data
+      - id: string
+      - name: string
+      - email: string
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
+
+4.  Update an User (PATCH): endpoint is -> https://one-threat-order-api.onrender.com/api/orders/661386b463eb22abed701038
+
+    input of the api is: {name: string, email: string}. currently this api can update only the name of user but it takes email for extra checking. you can update an user by postman/insomnia.
+
+    here output will be like -
+
+    - data
+      - id: string
+      - name: string
+      - email: string
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
 
 5.  Delete an Order (DELETE): end-point is -> https://one-threat-order-api.onrender.com/api/orders/6614cc0d40bf95419231750a
 
@@ -149,32 +254,14 @@ here output will be like -
 
     here output will be like -
 
-- data
-  - id: string
-  - status: string
-  - paymentStatus: string
-  - total: number
-  - productsWithQuantity[]
-    - id: string
-    - name: string
-    - description: string
-    - price: number
-    - createdAt: Date
-    - updatedAt: Date
-  - user
-    - id: string
-    - name: string
-    - email: string
-    - createdAt: Date
-    - updatedAt: Date
-  - createdAt: Date
-  - updatedAt: Date-
-- message: string[]
-- success: boolean
-
-### Using free server of <a href="https://render.com/" target="_blank">Render</a> for deploy this application
-
-<p>According to <a href="https://render.com/" target="_blank">Render</a>: <span style="color:red;font-weight:300">free instance will spin down with inactivity, which can delay requests by 50 seconds or more.</span></p>
+    - data
+      - id: string
+      - name: string
+      - email: string
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
 
 # Instruction of Running the app in local machine
 
