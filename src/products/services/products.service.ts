@@ -58,6 +58,16 @@ export class ProductsService {
     return await this.formatProduct(product);
   }
 
+  async findProductsByIds(ids: string[]): Promise<ProductRo[]> {
+    const products = await this.productModel.find({ _id: { $in: ids } });
+    return await Promise.all(
+      products.map(
+        async (product): Promise<ProductRo> =>
+          await this.formatProduct(product),
+      ),
+    );
+  }
+
   async update(id: string, dto: ProductDto): Promise<ProductRo> {
     const checkProduct = await this.findOne(id);
 
