@@ -9,11 +9,16 @@ should process order details (like user ID, product IDs, quantities, and payment
 Handle GET, POST, PUT, PATCH and DELETE requests for the endpoint. Ensure that the
 endpoint validates incoming data, handles exceptions, and returns appropriate responses.
 
-# API documentation
-
-You can check API documentation <a href="https://docs.google.com/document/d/1Q49N8AhACg4KZD5tiXyfiHuOT9iaEJgwhVp5QGhQiZg/edit?usp=sharing" target="_blank">here...</a>
-
 # Live server Information
+
+# App Root Link
+
+- here is the app root link: <a href="https://one-threat-order-api.onrender.com/api" target="_blank">https://one-threat-order-api.onrender.com/api</a>
+
+# Order APIs
+
+1. Get Order List: <a href="https://one-threat-order-api.onrender.com/api/orders" target="_blank">Order List</a>
+2. Get An Order: <a href="https://one-threat-order-api.onrender.com/api/orders/6614cc0d40bf95419231750a" target="_blank">Order(Id: 6614cc0d40bf95419231750a)</a>
 
 ### Using free server of <a href="https://render.com/" target="_blank">Render</a> for deploy this application
 
