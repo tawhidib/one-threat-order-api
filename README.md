@@ -1,14 +1,29 @@
-## Description
+# Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is represent the task of <a href="https://www.onethreadapp.com/"  target="_blank">OneThreat</a> NodeJs Developer.
 
-This project is represent the task of <a href="https://www.onethreadapp.com/">One Threat</a> NodeJs Developer.
+### Task description
 
-## Live server Information
+Create a set of API endpoints for handling CRUD operations of orders. This endpoint
+should process order details (like user ID, product IDs, quantities, and payment information).
+Handle GET, POST, PUT, PATCH and DELETE requests for the endpoint. Ensure that the
+endpoint validates incoming data, handles exceptions, and returns appropriate responses.
 
-## Running the app in local machine
+# API documentation
 
-# Make sure you installed the latest version of NodeJs on you machine
+You can check API documentation <a href="https://docs.google.com/document/d/1Q49N8AhACg4KZD5tiXyfiHuOT9iaEJgwhVp5QGhQiZg/edit?usp=sharing" target="_blank">here...</a>
+
+# Live server Information
+
+### Using free server of <a href="https://render.com/" target="_blank">Render</a> for deploy this application
+
+<p>According to <a href="https://render.com/" target="_blank">Render</a>: <span style="color:red;font-weight:300">free instance will spin down with inactivity, which can delay requests by 50 seconds or more.</span></p>
+
+# Instruction of Running the app in local machine
+
+### Make sure you installed the latest version of NodeJs on you machine
+
+### create .env file in the root, copy .env.example and paste in the .env file
 
 ```bash
 $ npm install
@@ -24,30 +39,3 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
