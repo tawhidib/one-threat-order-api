@@ -205,7 +205,7 @@ here output will be like -
     - message: string[]
     - success: boolean
 
-2.  Get An User (GET): <a href="https://one-threat-order-api.onrender.com/api/users/661386b463eb22abed701038" target="_blank">Order(Id: 661386b463eb22abed701038)</a>
+2.  Get An User (GET): <a href="https://one-threat-order-api.onrender.com/api/users/661386b463eb22abed701038" target="_blank">User(Id: 661386b463eb22abed701038)</a>
 
     here output will be like -
 
@@ -220,7 +220,7 @@ here output will be like -
 
 3.  Create an User (POST): endpoint is -> https://one-threat-order-api.onrender.com/api/users
 
-    input of the api is: {name: string(user id), email: string}. can create a new user. here email should be unique
+    input of the api is: {name: string, email: string}. can create a new user. here email should be unique
 
     here output will be like -
 
@@ -233,7 +233,7 @@ here output will be like -
     - message: string[]
     - success: boolean
 
-4.  Update an User (PATCH): endpoint is -> https://one-threat-order-api.onrender.com/api/orders/661386b463eb22abed701038
+4.  Update an User (PATCH): endpoint is -> https://one-threat-order-api.onrender.com/api/users/661386b463eb22abed701038
 
     input of the api is: {name: string, email: string}. currently this api can update only the name of user but it takes email for extra checking. you can update an user by postman/insomnia.
 
@@ -248,9 +248,9 @@ here output will be like -
     - message: string[]
     - success: boolean
 
-5.  Delete an Order (DELETE): end-point is -> https://one-threat-order-api.onrender.com/api/orders/6614cc0d40bf95419231750a
+5.  Delete an User (DELETE): end-point is -> https://one-threat-order-api.onrender.com/api/users/661386b463eb22abed701038
 
-    this api update order's delete and deletedAt field and make it true, new Date(). so it is ensuring data will never permanently deleted from database.
+    this api update user's delete and deletedAt field and make it true, new Date(). so it is ensuring data will never permanently deleted from database.
 
     here output will be like -
 
@@ -258,6 +258,95 @@ here output will be like -
       - id: string
       - name: string
       - email: string
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
+
+### Product APIs
+
+1.  Get Product List (GET): <a href="https://one-threat-order-api.onrender.com/api/products" target="_blank">product List</a>
+
+    input of this api: this api can take 3 optional parameters.
+
+    1. page: number
+    2. per_page: number
+    3. query_string: string (passing this you can find product by name)
+
+    output of this api:
+
+    - data
+      - data[]
+        - id: string
+        - name: string
+        - description: string
+        - price: number
+        - createdAt: Date
+        - updatedAt: Date
+      - meta
+        - page: number
+        - per_page: number
+        - total_count: number
+        - page_count: number
+    - message: string[]
+    - success: boolean
+
+2.  Get An Product (GET): <a href="https://one-threat-order-api.onrender.com/api/products/66143411976b93019d435d07" target="_blank">Product(Id: 66143411976b93019d435d07)</a>
+
+    here output will be like -
+
+    - data
+      - id: string
+      - name: string
+      - description: string
+      - price: number
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
+
+3.  Create an Product (POST): endpoint is -> https://one-threat-order-api.onrender.com/api/products
+
+    input of the api is: {name: string, description: string, price: number}.
+    here output will be like -
+
+    - data
+      - id: string
+      - name: string
+      - description: string
+      - price: number
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
+
+4.  Update an User (PATCH): endpoint is -> https://one-threat-order-api.onrender.com/api/products/66143411976b93019d435d07
+
+    input of the api is: {name: string, description: string, price: number}. you can update an user by postman/insomnia.
+
+    here output will be like -
+
+    - data
+      - id: string
+      - name: string
+      - description: string
+      - price: number
+      - createdAt: Date
+      - updatedAt: Date
+    - message: string[]
+    - success: boolean
+
+5.  Delete an Product (DELETE): end-point is -> https://one-threat-order-api.onrender.com/api/products/66143411976b93019d435d07
+
+    this api update products's delete and deletedAt field and make it true, new Date(). so it is ensuring data will never permanently deleted from database.
+
+    here output will be like -
+
+    - data
+      - id: string
+      - name: string
+      - description: string
+      - price: number
       - createdAt: Date
       - updatedAt: Date
     - message: string[]
