@@ -186,7 +186,7 @@ here output will be like -
 
     1. page: number
     2. per_page: number
-    3. query_string: string (passing this you can find user by name)
+    3. query_text: string (passing this you can find user by name)
 
     output of this api:
 
@@ -271,7 +271,7 @@ here output will be like -
 
     1. page: number
     2. per_page: number
-    3. query_string: string (passing this you can find product by name)
+    3. query_text: string (passing this you can find product by name)
 
     output of this api:
 
